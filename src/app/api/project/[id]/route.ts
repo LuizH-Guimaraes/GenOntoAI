@@ -1,23 +1,17 @@
+// src/app/api/project/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { pool } from "@/lib/db";
 import { auth0 } from "@/lib/auth0";
 import { getUserIdByAuth0Id } from "@/lib/utils";
 
-// GET - Buscar projeto do usuário
-export async function GET(
-  req: NextRequest,
-  contextPromise: Promise<{ params: { id?: string } }>
-) {
-  try {
-    const { params } = await contextPromise;
-    const projectId = params?.id;
+// Garante que usamos Node.js (necessário p/ 'pg', etc.)
+export const runtime = "nodejs";
 
-    if (!projectId) {
-      return NextResponse.json(
-        { error: "Missing project ID." },
-        { status: 400 }
-      );
-    }
+type Ctx = { params: { id: string } };
+
+export async function GET(req: NextRequest, { params }: Ctx) {
+  try {
+    const projectId = params.id;
 
     const session = await auth0.getSession();
     if (!session?.user) {
@@ -49,21 +43,9 @@ export async function GET(
   }
 }
 
-// PUT - Atualizar projeto
-export async function PUT(
-  req: NextRequest,
-  contextPromise: Promise<{ params: { id?: string } }>
-) {
+export async function PUT(req: NextRequest, { params }: Ctx) {
   try {
-    const { params } = await contextPromise;
-    const projectId = params?.id;
-
-    if (!projectId) {
-      return NextResponse.json(
-        { error: "Missing project ID." },
-        { status: 400 }
-      );
-    }
+    const projectId = params.id;
 
     const session = await auth0.getSession();
     if (!session?.user) {
@@ -103,21 +85,9 @@ export async function PUT(
   }
 }
 
-// DELETE - Excluir projeto
-export async function DELETE(
-  req: NextRequest,
-  contextPromise: Promise<{ params: { id?: string } }>
-) {
+export async function DELETE(req: NextRequest, { params }: Ctx) {
   try {
-    const { params } = await contextPromise;
-    const projectId = params?.id;
-
-    if (!projectId) {
-      return NextResponse.json(
-        { error: "Missing project ID." },
-        { status: 400 }
-      );
-    }
+    const projectId = params.id;
 
     const session = await auth0.getSession();
     if (!session?.user) {
