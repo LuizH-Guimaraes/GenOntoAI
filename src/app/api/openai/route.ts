@@ -4,7 +4,7 @@ import { pool } from "@/lib/db";
 import { decrypt } from "@/lib/crypto";
 
 const MODEL = "gpt-3.5-turbo";
-const MAX_TOKENS = 200;
+const MAX_TOKENS = 2000;
 
 export async function POST(req: Request) {
   // const data = {
