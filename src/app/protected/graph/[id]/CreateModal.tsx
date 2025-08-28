@@ -25,12 +25,7 @@ export function CreateRelationship({
   const [openDirection, setOpenDirection] = useState<"up" | "down">("down");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const namespace = "http://example.org/";
-
-  const handleInsert = async () => {
+  async function handleInsert() {
     const finalPredicate = isCustom ? customRelation : predicate;
     onInsertComplete?.({ subject, relationship: finalPredicate, object });
     setSubject("");
@@ -39,7 +34,7 @@ export function CreateRelationship({
     setIsCustom(false);
     setCustomRelation("");
     onClose();
-  };
+  }
 
   useEffect(() => {
     if (isDropdownOpen && dropdownRef.current) {
@@ -53,13 +48,13 @@ export function CreateRelationship({
     }
   }, [isDropdownOpen]);
 
-  const getPredicateLabel = (value: string) => {
+  function getPredicateLabel(value: string) {
     for (const group of relationshipOptions) {
       const found = group.options.find((opt) => opt.value === value);
       if (found) return found.label;
     }
     return value;
-  };
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -110,7 +105,7 @@ export function CreateRelationship({
                   className="px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md border border-blue-300"
                   title="Back"
                 >
-                  ←
+                  {"\u2190"}
                 </button>
               </div>
             ) : (
@@ -119,7 +114,7 @@ export function CreateRelationship({
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700"
                 >
-                  {getPredicateLabel(predicate)} ▾
+                  {getPredicateLabel(predicate)} {"\u25BE"}
                 </button>
 
                 {isDropdownOpen && (

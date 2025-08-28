@@ -13,7 +13,7 @@ type Graph = {
   name: string;
 };
 
-export function DashBoardPage({ user }: DashboardPageProps) {
+export default function DashBoardPage({ user }: DashboardPageProps) {
   const [loading, setLoading] = useState(true);
   const [graphs, setGraphs] = useState<Graph[]>([]);
   const [newGraphName, setNewGraphName] = useState("");
@@ -26,8 +26,6 @@ export function DashBoardPage({ user }: DashboardPageProps) {
       const res = await fetch(`/api/project?user_id=${userId}`);
       const data = await res.json();
       setGraphs(data || []);
-
-      console.log(data);
     } catch (error) {
       console.error("Erro ao buscar projetos:", error);
     } finally {
@@ -88,7 +86,6 @@ export function DashBoardPage({ user }: DashboardPageProps) {
       await fetch(`/api/project/${id}`, {
         method: "DELETE",
       });
-
       setGraphs((prev) => prev.filter((g) => g.id !== id));
     } catch (error) {
       console.error("Erro ao deletar projeto:", error);

@@ -1,9 +1,8 @@
 "use client";
 
 import { use } from "react";
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-// import Graph from "@/components/graph";
+import Graph from "@/components/graph";
 import { CreateRelationship } from "./CreateModal";
 import { EditModal } from "./EditModal";
 import { RelationshipMap } from "./RelationshipMap";
@@ -16,7 +15,7 @@ import {
   toCamelCase,
 } from "@/lib/stringFormatter";
 import { GraphData } from "@/lib/types";
-// import GraphExportButtons from "./GraphExportButtons";
+import GraphExportButtons from "./GraphExportButtons";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -43,11 +42,6 @@ export default function ProjectPage({ params }: PageProps) {
     links: [],
   });
 
-  // const Graph = dynamic(() => import("@/components/graph"), {
-  //   ssr: false, // pula SSR (útil se o Graph usa window/document)
-  //   loading: () => <div>Loading graph…</div>,
-  // });
-
   const [text, setText] = useState<string>("");
   const [svoList, setSvoList] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -67,23 +61,23 @@ export default function ProjectPage({ params }: PageProps) {
     | null
   >(null);
 
-  useEffect(() => {
-    async function getProject() {
-      try {
-        const res = await fetch(`/api/project/${id}`);
-        if (!res.ok) throw new Error("Failed to fetch project");
-        const data = await res.json();
-        setProject(data);
-      } catch (err) {
-        console.error(err);
-        setProject(null);
-      } finally {
-        setLoading(false);
-      }
-    }
+  // useEffect(() => {
+  //   async function getProject() {
+  //     try {
+  //       const res = await fetch(`/api/project/${id}`);
+  //       if (!res.ok) throw new Error("Failed to fetch project");
+  //       const data = await res.json();
+  //       setProject(data);
+  //     } catch (err) {
+  //       console.error(err);
+  //       setProject(null);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
 
-    if (id) getProject();
-  }, [id]);
+  //   if (id) getProject();
+  // }, [id]);
 
   function isNode(item: NodeType | EdgeType | null): item is NodeType {
     return !!item && !("sourceId" in item);
@@ -247,13 +241,13 @@ export default function ProjectPage({ params }: PageProps) {
 
   return (
     <div className="flex flex-col w-full">
-      {/* <CreateRelationship
+      <CreateRelationship
         isOpen={showModal}
         onInsertComplete={_handleInsert}
         onClose={() => setShowModal(false)}
-      /> */}
+      />
 
-      {/* <EditModal
+      <EditModal
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
         onSave={handleEdit}
@@ -261,14 +255,14 @@ export default function ProjectPage({ params }: PageProps) {
           selectedNode?.label ? cleanLabel(selectedNode!.label) : ""
         }
         key={"EDIT:" + selectedNode?.label}
-      /> */}
+      />
 
-      {/* <RelationshipMap
+      <RelationshipMap
         insertList={_handleInsertMany}
         svoList={svoList}
         open={openRelationShipMap}
         setOpen={setOpenRelationshipMap}
-      /> */}
+      />
 
       <div className="w-full text-center mx-auto p-6 bg-white shadow rounded">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
@@ -314,21 +308,23 @@ export default function ProjectPage({ params }: PageProps) {
               >
                 Delete
               </button>
-              {/* {graphData && (
+              {graphData && (
                 <GraphExportButtons
                   graphData={graphData}
                   baseIRI="https://projexflow.com/onto#"
                 />
-              )} */}
+              )}
             </div>
           </div>
-          {/* <Graph
-            key={graphRefreshKey}
-            graphId={id}
-            selectNode={setSelectedNode}
-            onSelectEdge={setSelectedNode}
-            onUpdateGraph={(graphData) => setGraphData(graphData)}
-          /> */}
+          {/* {setSelectedNode && (
+            <Graph
+              key={graphRefreshKey}
+              graphId={id}
+              selectNode={setSelectedNode}
+              onSelectEdge={setSelectedNode}
+              onUpdateGraph={(graphData) => setGraphData(graphData)}
+            />
+          )} */}
         </div>
 
         <div className="w-full md:flex-1 p-6 rounded-lg shadow-md bg-white flex flex-col gap-4">

@@ -116,7 +116,7 @@ export default function SVO_Card({
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700"
               >
-                {getRelationLabel(selectedRelation)} ▾
+                {getRelationLabel(selectedRelation)} {"\u25BE"}
               </button>
             ) : (
               <div className="flex items-center gap-2">
@@ -152,7 +152,7 @@ export default function SVO_Card({
                   className="text-sm px-1 cursor-pointer  bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md border border-blue-300"
                   title="Voltar"
                 >
-                  ←
+                  {"\u2190"}
                 </button>
               </div>
             )}
@@ -262,7 +262,7 @@ export default function SVO_Card({
           onClick={() => deleteRelationship(relationship.id!)}
           className="text-white bg-red-500 hover:bg-red-600 rounded-md px-2 py-1 text-lg leading-none"
         >
-          ×
+          x
         </button>
       </div>
     </div>

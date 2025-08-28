@@ -4,14 +4,11 @@ import { pool } from "@/lib/db";
 import { auth0 } from "@/lib/auth0";
 import { getUserIdByAuth0Id } from "@/lib/utils";
 
-// Garante que usamos Node.js (necessário p/ 'pg', etc.)
 export const runtime = "nodejs";
 
-type Ctx = { params: { id: string } };
-
-export async function GET(req: NextRequest, { params }: Ctx) {
+export async function GET(req: NextRequest, ctx: any) {
   try {
-    const projectId = params.id;
+    const { id: projectId } = ctx.params as { id: string };
 
     const session = await auth0.getSession();
     if (!session?.user) {
@@ -43,9 +40,9 @@ export async function GET(req: NextRequest, { params }: Ctx) {
   }
 }
 
-export async function PUT(req: NextRequest, { params }: Ctx) {
+export async function PUT(req: NextRequest, ctx: any) {
   try {
-    const projectId = params.id;
+    const { id: projectId } = ctx.params as { id: string };
 
     const session = await auth0.getSession();
     if (!session?.user) {
@@ -85,9 +82,9 @@ export async function PUT(req: NextRequest, { params }: Ctx) {
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: Ctx) {
+export async function DELETE(req: NextRequest, ctx: any) {
   try {
-    const projectId = params.id;
+    const { id: projectId } = ctx.params as { id: string };
 
     const session = await auth0.getSession();
     if (!session?.user) {

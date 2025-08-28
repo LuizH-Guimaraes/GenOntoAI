@@ -1,4 +1,4 @@
-// app/api/graph/relationship/route.ts
+// src/app/api/graph/relationship/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { auth0 } from "@/lib/auth0";
 import { toCamelCase } from "@/lib/stringFormatter";
@@ -16,11 +16,25 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "Missing graphId" }, { status: 400 });
     }
 
-    const { subject, predicate, object } = (await req.json()) as {
-      subject?: string;
-      predicate?: string;
-      object?: string;
-    };
+    let subject: string | undefined;
+    let predicate: string | undefined;
+    let object: string | undefined;
+
+    // Adiciona um try/catch para lidar com a análise do JSON
+    try {
+      const body = (await req.json()) as {
+        subject?: string;
+        predicate?: string;
+        object?: string;
+      };
+      subject = body.subject;
+      predicate = body.predicate;
+      object = body.object;
+    } catch (e) {
+      // O corpo da requisição DELETE está vazio ou não é JSON.
+      // O erro 'Unexpected end of JSON input' será capturado aqui,
+      // permitindo que o código continue.
+    }
 
     if (!subject?.trim() || !predicate?.trim() || !object?.trim()) {
       return NextResponse.json(
@@ -29,11 +43,9 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Namespace por usuário + grafo (mesma lógica do insert)
     const auth0IdSafe = session.user.sub.replace("|", "-");
     const namespace = `http://genontoai.com/${auth0IdSafe}/${graphId}/`;
 
-    // Padroniza termos (camelCase pra termos “bonitos” e estáveis)
     const s = `<${namespace}${encodeURIComponent(
       toCamelCase(subject.trim())
     )}>`;
@@ -42,7 +54,6 @@ export async function DELETE(req: NextRequest) {
     )}>`;
     const o = `<${namespace}${encodeURIComponent(toCamelCase(object.trim()))}>`;
 
-    // DELETE DATA remove exatamente a triple informada
     const updateQuery = `
       DELETE DATA {
         ${s} ${p} ${o} .

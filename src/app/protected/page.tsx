@@ -1,10 +1,12 @@
-// app/protected/page.tsx ou app/protected/dashboard/page.tsx
 "use client";
 
 import { useSession } from "@/app/context/SessionContext";
-import { DashBoardPage } from "./dashboard";
+// import { DashBoardPage } from "./dashboard";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
+
+const DashBoardPage = dynamic(() => import("./dashboard"), { ssr: false });
 
 export default function ProtectedPage() {
   const { user, loading } = useSession();

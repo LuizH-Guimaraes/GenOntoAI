@@ -7,8 +7,6 @@ export function HomePage() {
     <div className="max-w-4xl mx-auto px-4 py-10 text-gray-800">
       <h1 className="text-4xl font-bold mb-6 text-center">About Us</h1>
 
-      <a href="/">Acess Dashboadr</a>
-
       <p className="text-lg mb-4">
         This project is part of an academic research initiative in the field of{" "}
         <strong>Computer Science</strong>, focused on the automated construction

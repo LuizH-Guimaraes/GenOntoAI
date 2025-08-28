@@ -81,7 +81,7 @@ export default function GraphExportMenu({
         onClick={run(() => exportTTLFromD3(graphData!, baseIRI))}
         role="menuitem"
       >
-        Turtle (.ttl)
+        Turtle .ttl
       </button>
       <button
         className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
@@ -95,7 +95,7 @@ export default function GraphExportMenu({
         onClick={run(() => exportCSVFromD3(graphData!))}
         role="menuitem"
       >
-        CSV (nodes & edges)
+        CSV nodes & edges
       </button>
       <button
         className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
@@ -148,7 +148,7 @@ export default function GraphExportMenu({
             }`}
             aria-hidden
           >
-            ▾
+            {"\u25BE"}
           </span>
         </summary>
         {!disabled && MenuList}
@@ -178,7 +178,7 @@ export default function GraphExportMenu({
           />
         </svg>
         Export
-        <span aria-hidden>▾</span>
+        <span aria-hidden>{"\u25BE"}</span>
       </summary>
       {!disabled && MenuList}
     </details>
